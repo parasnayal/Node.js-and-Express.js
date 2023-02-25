@@ -31,8 +31,7 @@ router.post('/login', [
             const token = jwt.sign(payload, secret_key, { algorithm: 'HS256' });
             return res.status(200).json({ message: "Successfully login", status: 200, error: false, payload: token });
         } catch (error) {
-            console.log(error.message);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ error:true, message: "Internal server error" ,status:500});
         }
     }
 

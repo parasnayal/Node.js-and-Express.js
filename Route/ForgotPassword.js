@@ -24,19 +24,16 @@ router.post('/forgot-password', [
         const token = await tokenModel.findOne({ userId: isUserExists.userID });
         if (token) {
             const afterDelete = await token.deleteOne()
-            console.log(afterDelete, 'afterDelete')
         }
         const afterTokenCreate = await tokenModel.create({
             userId: isUserExists.userID,
             token: generateToken,
             createdAt: Date.now()
         })
-        console.log(afterTokenCreate, 'afterTokenCreate');
         await handleEmail(isUserExists.userID, email, token)
         return res.status(200).json({ error: false, message: "To reset the password link is send at your email address", status: 200 })
     } catch (error) {
-        console.log(error)
-        return error
+        return res.status(500).json({error:true,message:"Internal server error",status:500});
     }
 })
 module.exports = router;

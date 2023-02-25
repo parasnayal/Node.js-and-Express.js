@@ -14,8 +14,9 @@ app.use(bodyParser.json());
 
 app.use('/api/auth',require('./Route/SignupRoute'));
 app.use('/api/auth',require('./Route/LoginRoute'));
-app.use('/api',require('./Route/ForgotPassword'));
-app.use('/api',require('./Route/ResetPassword'));
+app.use('/api/auth',require('./Route/ForgotPassword'));
+app.use('/api/auth',require('./Route/ResetPassword'));
+app.use('/api/auth',require('./Route/ChangePassword'));
 
 app.listen(port, () => {
     console.log(`Example app running at http://localhost:${port}`);

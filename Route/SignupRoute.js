@@ -25,15 +25,16 @@ router.post('/signup', [
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
     }
-    const { firstName, lastName, email, password } = req.body;
-    const genSalt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, genSalt)
+    try {
+        const { firstName, lastName, email, password } = req.body;
+        const genSalt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, genSalt);
 
-    const isUserExists = await userModel.findOne({ email });
-    if (isUserExists) {
-        return res.json({ "error": "User with this email is already exists" });
-    }
-    else {
+        const isUserExists = await userModel.findOne({ email });
+        if (isUserExists) {
+            return res.json({ "error": "User with this email is already exists" });
+        }
+
         // Two way save data in dbms
         // (1) => create()
         await userModel.create({ email, firstName, lastName, password: hashedPassword });
@@ -41,7 +42,10 @@ router.post('/signup', [
         // const user = new userModel({ email, firstName, lastName, password:hashedPassword });
         // const newData = await userModel.save()
         return res.status(201).json({ message: "Account is created successfully", status: 200, error: "false" });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error", status: 500 });
     }
+
 })
 
 module.exports = router;
