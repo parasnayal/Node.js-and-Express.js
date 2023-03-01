@@ -22,6 +22,10 @@ const userSchema = new Schema({
     userID:{
         type:String,
         default:uuidv4
+    },
+    profileImage:{
+        type:String,
+        required:true
     }
 });
 // An instance of a model is called a document.Models are responsible for creating and reading documents from the underlying MongoDB database.The first argument is the singular name of the collection your model is for.
